@@ -3,8 +3,10 @@ import 'package:classroom_flutter/snippets/loading_indicator.dart';
 import 'package:classroom_flutter/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 
+import 'login_screen.dart';
+
 class RegistrationScreen extends StatefulWidget {
-  static const String routeName = "registration_screen";
+  static const String routeName = "/registration_screen";
 
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
@@ -105,6 +107,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               },
               text: 'Register',
               color: Colors.blueAccent,
+            ),
+            TextButton(
+              child: Text("already have and account."),
+              onPressed: () {
+                Navigator.pushNamed(context, LoginScreen.routeName);
+              },
             ),
           ],
         ),
