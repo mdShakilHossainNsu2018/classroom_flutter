@@ -30,6 +30,6 @@ class ApiError {
         style: TextStyle(color: Colors.red),
       ),
     ));
-    Navigator.pop(context);
+    // Navigator.pop(context);
   }
 }

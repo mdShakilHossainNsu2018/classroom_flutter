@@ -2,14 +2,13 @@ import 'dart:convert';
 
 import 'package:classroom_flutter/Share_preference/Share_pref.dart';
 import 'package:classroom_flutter/constants/constants.dart';
-import 'package:classroom_flutter/controller/apis/api_error.dart';
 import 'package:classroom_flutter/controller/apis/user_api.dart';
-import 'package:classroom_flutter/controller/user_controller.dart';
 import 'package:classroom_flutter/models/login_model.dart';
 import 'package:classroom_flutter/screens/registration_screen.dart';
 import 'package:classroom_flutter/snippets/loading_indicator.dart';
 import 'package:classroom_flutter/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 import 'home_screen.dart';
 
@@ -25,9 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _isObscureText = true;
   final LoadingIndicator _loadingIndicator = LoadingIndicator();
-  final ApiError _apiError = ApiError();
-  final UserController _userController = UserController();
   final UserApi _userApi = UserApi();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -58,41 +56,60 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 48.0,
             ),
-            TextField(
-              textAlign: TextAlign.center,
-              onChanged: (value) {
-                _username = value;
-              },
-              decoration: kTextFiledDecoration.copyWith(
-                  hintText: "Enter Your username.",
-                  suffixIcon: Icon(
-                    Icons.perm_identity,
-                    color: Colors.lightBlueAccent,
-                  )),
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            TextField(
-              onChanged: (value) {
-                _password = value;
-              },
-              textAlign: TextAlign.center,
-              obscureText: _isObscureText,
-              decoration: kTextFiledDecoration.copyWith(
-                  hintText: 'Enter your password.',
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isObscureText = !_isObscureText;
-                        });
-                      },
-                      icon: Icon(
-                        _isObscureText
-                            ? Icons.remove_red_eye
-                            : Icons.remove_red_eye_outlined,
-                        color: Colors.lightBlueAccent,
-                      ))),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    textAlign: TextAlign.center,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Empty username';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      _username = value;
+                    },
+                    decoration: kTextFiledDecoration.copyWith(
+                        hintText: "Enter Your username.",
+                        suffixIcon: Icon(
+                          Icons.perm_identity,
+                          color: Colors.lightBlueAccent,
+                        )),
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  TextFormField(
+                    onChanged: (value) {
+                      _password = value;
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Empty password';
+                      }
+                      return null;
+                    },
+                    textAlign: TextAlign.center,
+                    obscureText: _isObscureText,
+                    decoration: kTextFiledDecoration.copyWith(
+                        hintText: 'Enter your password.',
+                        suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isObscureText = !_isObscureText;
+                              });
+                            },
+                            icon: Icon(
+                              _isObscureText
+                                  ? Icons.remove_red_eye
+                                  : Icons.remove_red_eye_outlined,
+                              color: Colors.lightBlueAccent,
+                            ))),
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 24.0,
@@ -101,36 +118,30 @@ class _LoginScreenState extends State<LoginScreen> {
               color: Colors.lightBlueAccent,
               text: 'Log In',
               onPressed: () async {
-                setState(() {
-                  _isLoading = true;
-                });
-                _loadingIndicator.showLoadingIndicator(
-                    context: context, text: "Logging...");
-                // todo sign in request
-                //await UserApi().login(username: _username, password: _password);
+                if (_formKey.currentState!.validate()) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  _loadingIndicator.showLoadingIndicator(
+                      context: context, text: "Logging...");
 
-                var response = await _userApi.login(
-                    username: _username, password: _password);
+                  var response = await _userApi.login(
+                      username: _username, password: _password);
 
-                if (response.statusCode == 200) {
-                  LoginDataModel user =
-                      LoginDataModel.fromJson(jsonDecode(response.body));
-                  Prefs.setLoggedInUser(user);
-                  getUserAndNavigate();
-                } else {
-                  Prefs.clearPref();
-                  _apiError.showError("Something wrong! try again", context);
+                  if (response.statusCode == 200) {
+                    LoginDataModel user =
+                        LoginDataModel.fromJson(jsonDecode(response.body));
+                    Prefs.setLoggedInUser(user);
+                    getUserAndNavigate();
+                  } else {
+                    Prefs.clearPref();
+                    _onError(context, response);
+                  }
+
+                  setState(() {
+                    _isLoading = false;
+                  });
                 }
-
-                setState(() {
-                  _isLoading = false;
-                });
-
-                // _userController
-                //     .signInWithEmailAndPassword(
-                //         context: context, email: _email, password: _password)
-                //     .then((value) => getUserAndNavigate())
-                //     .catchError((error) => _apiError.showError(error, context));
               },
             ),
             TextButton(
@@ -143,6 +154,18 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  void _onError(BuildContext context, Response response) {
+    Navigator.pop(context);
+
+    // Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        "${response.body} errorCode: ${response.statusCode}",
+        style: TextStyle(color: Colors.red),
+      ),
+    ));
   }
 
   void getUserAndNavigate() {

@@ -8,4 +8,17 @@ class UserApi {
         body: {"username": username, "password": password});
     return response;
   }
+
+  Future<http.Response> signup(
+      {required String username,
+      required String password,
+      required String email}) async {
+    var response = await http.post(Uri.parse(K_REGISTRATION_URL), body: {
+      "username": username,
+      "password": password,
+      "email": email,
+      "is_staff": "false"
+    });
+    return response;
+  }
 }

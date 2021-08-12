@@ -12,3 +12,4 @@ String getIP() {
 
 String K_BASE_URL = "http://${getIP()}:8000/api/";
 String K_LOGIN_URL = "${K_BASE_URL}users/token-auth/";
+String K_REGISTRATION_URL = "${K_BASE_URL}users/users/";
