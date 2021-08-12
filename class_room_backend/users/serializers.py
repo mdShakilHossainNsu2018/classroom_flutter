@@ -23,8 +23,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         if User.objects.filter(email=email).exists():
             raise ValidationError("Email exists")
 
-        if not email.endswith('northsouth.edu'):
-            raise ValidationError('Only northsouth.edu email accepted.')
+     #   if not email.endswith('northsouth.edu'):
+     #       raise ValidationError('Only northsouth.edu email accepted.')
         return value
 
     # def validate_username(self, value):
