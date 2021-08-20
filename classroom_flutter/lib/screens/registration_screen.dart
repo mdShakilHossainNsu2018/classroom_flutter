@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:classroom_flutter/Share_preference/Share_pref.dart';
 import 'package:classroom_flutter/constants/constants.dart';
-import 'package:classroom_flutter/controller/apis/api_error.dart';
 import 'package:classroom_flutter/controller/apis/user_api.dart';
 import 'package:classroom_flutter/models/login_model.dart';
 import 'package:classroom_flutter/snippets/loading_indicator.dart';
@@ -33,7 +32,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final LoadingIndicator _loadingIndicator = LoadingIndicator();
   final UserApi _userApi = UserApi();
-  final ApiError _apiError = ApiError();
   final _formKey = GlobalKey<FormState>();
 
   @override
