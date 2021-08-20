@@ -10,6 +10,6 @@ class CourseStream extends StatefulWidget {
 class _CourseStreamState extends State<CourseStream> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(child: Text("course Stream"),);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:classroom_flutter/Share_preference/Share_pref.dart';
 import 'package:classroom_flutter/controller/apis/course_api.dart';
 import 'package:classroom_flutter/models/courses_by_user_model.dart';
@@ -9,6 +10,8 @@ import 'package:classroom_flutter/widgets/app_drawer.dart';
 import 'package:classroom_flutter/widgets/course_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'chat_screen.dart';
 
 class HomePage extends StatefulWidget {
   static const String routeName = "/home-page";
@@ -45,14 +48,19 @@ class _HomePageState extends State<HomePage> {
     List<CoursesByUserData> _courseList = Provider.of<Courses>(context).courses;
     return Scaffold(
       drawer: AppDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, ChatScreen.routeName);
+        },
+        child: Icon(Icons.chat_outlined),
+      ),
       appBar: AppBar(
         actions: [
-          ElevatedButton.icon(
+          ElevatedButton(
             onPressed: () {
               logoutAndNavigate(context);
             },
-            icon: Icon(Icons.logout),
-            label: Text("Logout"),
+            child: Icon(Icons.logout),
           )
         ],
       ),

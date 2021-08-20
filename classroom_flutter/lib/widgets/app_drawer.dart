@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:classroom_flutter/Share_preference/Share_pref.dart';
 import 'package:classroom_flutter/models/courses_by_user_model.dart';
 import 'package:classroom_flutter/providers/courses.dart';
+import 'package:classroom_flutter/screens/chat_screen.dart';
 import 'package:classroom_flutter/screens/course_screen.dart';
 import 'package:classroom_flutter/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,7 @@ class AppDrawer extends StatelessWidget {
                   ),
                   title: Text(_courseList[index].courseCode!),
                   onTap: () {
-                    Navigator.pushNamed(context, CourseScreen.routeName,
+                    Navigator.popAndPushNamed(context, CourseScreen.routeName,
                         arguments: _courseList[index]);
                   },
                 );
@@ -90,6 +91,15 @@ class AppDrawer extends StatelessWidget {
           // Divider(),
 
           Divider(),
+
+          ListTile(
+            title: const Text('Chat BOT'),
+            leading: Icon(Icons.chat_outlined),
+            onTap: () {
+              Navigator.pushNamed(context, ChatScreen.routeName);
+            },
+          ),
+
           ListTile(
             title: const Text('Logout'),
             leading: Icon(Icons.logout),

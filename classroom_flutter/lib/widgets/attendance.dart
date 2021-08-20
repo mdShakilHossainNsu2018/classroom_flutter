@@ -10,6 +10,6 @@ class Attendance extends StatefulWidget {
 class _AttendanceState extends State<Attendance> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(child: Text("attendance"),);
   }
 }

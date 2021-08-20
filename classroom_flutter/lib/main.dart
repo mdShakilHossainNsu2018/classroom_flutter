@@ -1,4 +1,5 @@
 import 'package:classroom_flutter/providers/courses.dart';
+import 'package:classroom_flutter/screens/chat_screen.dart';
 import 'package:classroom_flutter/screens/course_screen.dart';
 import 'package:classroom_flutter/screens/home_screen.dart';
 import 'package:classroom_flutter/screens/login_screen.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           RegistrationScreen.routeName: (context) => RegistrationScreen(),
           HomePage.routeName: (context) => HomePage(),
           CourseScreen.routeName: (context) => CourseScreen(),
+          ChatScreen.routeName: (context) => ChatScreen(),
         },
       ),
     );
