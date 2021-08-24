@@ -14,7 +14,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<CoursesByUserData> _courseList = Provider.of<Courses>(context).courses;
+    List<CourseInfoModel> _courseList = Provider.of<Courses>(context).courses;
 
     return Drawer(
       child: ListView(

@@ -1,26 +1,29 @@
 import 'package:classroom_flutter/constants/constants.dart';
 import 'package:classroom_flutter/models/courses_by_user_model.dart';
+import 'package:classroom_flutter/providers/courses.dart';
 import 'package:classroom_flutter/screens/course_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CourseItem extends StatelessWidget {
   const CourseItem({
     Key? key,
     required int index,
-    required List<CoursesByUserData> courseList,
+    required List<CourseInfoModel> courseList,
   })  : _courseList = courseList,
         index = index,
         super(key: key);
 
-  final List<CoursesByUserData> _courseList;
+  final List<CourseInfoModel> _courseList;
   final int index;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, CourseScreen.routeName,
-            arguments: _courseList[index]);
+        Provider.of<Courses>(context, listen: false)
+            .setCurrentCourse(_courseList[index]);
+        Navigator.pushNamed(context, CourseScreen.routeName);
       },
       child: Card(
         elevation: 10,

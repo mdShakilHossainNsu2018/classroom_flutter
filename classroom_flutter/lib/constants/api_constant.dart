@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 
-const String IP = "192.168.0.104";
+// const String IP = "192.168.0.104";
+const String IP = "192.168.0.108";
 
 String getIP() {
   if (Platform.isAndroid || Platform.isIOS) {
@@ -18,3 +19,9 @@ String K_GET_COURSES_URL =
     "${K_BASE_URL}courses/user_course/"; // get method, token
 String K_GET_COURSE_URL =
     "${K_BASE_URL}courses/courses/"; // get method, id, token
+
+String K_GET_COURSE_BY_ID(String id) {
+  return "${K_GET_COURSE_URL}${id}/";
+}
+
+String K_GET_POST_BY_COURSE_ID = "${K_BASE_URL}post/";

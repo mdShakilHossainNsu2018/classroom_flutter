@@ -1,4 +1,4 @@
-class CoursesByUserData {
+class CourseInfoModel {
   int? id;
   String? url;
   String? courseName;
@@ -11,7 +11,7 @@ class CoursesByUserData {
   String? updatedAt;
   List<String>? users;
 
-  CoursesByUserData(
+  CourseInfoModel(
       {this.id,
       this.url,
       this.courseName,
@@ -24,7 +24,7 @@ class CoursesByUserData {
       this.updatedAt,
       this.users});
 
-  CoursesByUserData.fromJson(Map<String, dynamic> json) {
+  CourseInfoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     url = json['url'];
     courseName = json['course_name'];

@@ -35,8 +35,8 @@ class _HomePageState extends State<HomePage> {
     LoginDataModel user = Prefs.getLoggedInUserDetails();
     var response = await _courseApi.getCourses(token: user.token!);
     if (response.statusCode == 200) {
-      List<CoursesByUserData> _courseList = (jsonDecode(response.body) as List)
-          .map((e) => CoursesByUserData.fromJson(e))
+      List<CourseInfoModel> _courseList = (jsonDecode(response.body) as List)
+          .map((e) => CourseInfoModel.fromJson(e))
           .toList();
 
       Provider.of<Courses>(context, listen: false).setCourses(_courseList);
@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    List<CoursesByUserData> _courseList = Provider.of<Courses>(context).courses;
+    List<CourseInfoModel> _courseList = Provider.of<Courses>(context).courses;
     return Scaffold(
       drawer: AppDrawer(),
       floatingActionButton: FloatingActionButton(
