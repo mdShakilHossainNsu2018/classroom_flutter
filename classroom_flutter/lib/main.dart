@@ -1,4 +1,6 @@
+import 'dart:core';
 import 'package:classroom_flutter/providers/courses.dart';
+import 'package:classroom_flutter/providers/posts.dart';
 import 'package:classroom_flutter/screens/chat_screen.dart';
 import 'package:classroom_flutter/screens/course_screen.dart';
 import 'package:classroom_flutter/screens/home_screen.dart';
@@ -17,7 +19,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider<Courses>(create: (_) => Courses())],
+      providers: [
+        ChangeNotifierProvider<Courses>(create: (context) => Courses()),
+        ChangeNotifierProvider<PostProvider>(
+            create: (context) => PostProvider()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(

@@ -25,3 +25,5 @@ String K_GET_COURSE_BY_ID(String id) {
 }
 
 String K_GET_POST_BY_COURSE_ID = "${K_BASE_URL}post/";
+
+String K_GET_CHATBOT_RESPONSE = "${K_BASE_URL}chatbot/"; // post method, text required

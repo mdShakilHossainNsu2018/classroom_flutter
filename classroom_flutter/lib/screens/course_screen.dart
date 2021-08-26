@@ -1,14 +1,9 @@
-import 'dart:developer';
-
-import 'package:classroom_flutter/controller/apis/post_api.dart';
 import 'package:classroom_flutter/models/courses_by_user_model.dart';
-import 'package:classroom_flutter/providers/courses.dart';
 import 'package:classroom_flutter/widgets/app_drawer.dart';
 import 'package:classroom_flutter/widgets/attendance.dart';
 import 'package:classroom_flutter/widgets/course_stream.dart';
 import 'package:classroom_flutter/widgets/peoples.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CourseScreen extends StatefulWidget {
   static const String routeName = "/course-screen";
@@ -21,7 +16,7 @@ class CourseScreen extends StatefulWidget {
 
 class _CourseScreenState extends State<CourseScreen> {
   // CourseApi _courseApi = CourseApi();
-  PostAPI _postAPI = PostAPI();
+
   CourseInfoModel? _currentCourse;
 
   List<Widget> _widgets = [
@@ -41,14 +36,7 @@ class _CourseScreenState extends State<CourseScreen> {
   @override
   void initState() {
     super.initState();
-    getCourseDetail();
-  }
-
-  getCourseDetail() async {
-    _currentCourse = context.read<Courses>().currentCourse;
-    var res =
-        await _postAPI.getPostByCourse(courseId: _currentCourse!.id.toString());
-    log(res.body);
+    // _currentCourse = context.read<Courses>().currentCourse;
   }
 
   @override
@@ -56,7 +44,7 @@ class _CourseScreenState extends State<CourseScreen> {
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
-        title: Text(_currentCourse!.courseCode!.toUpperCase()),
+        title: Text(""),
         actions: [
           ElevatedButton(
             onPressed: () {},
