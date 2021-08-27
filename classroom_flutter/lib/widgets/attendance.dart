@@ -1,4 +1,14 @@
+import 'dart:convert';
+import 'package:classroom_flutter/Share_preference/Share_pref.dart';
+import 'package:classroom_flutter/controller/apis/attendance_user.dart';
+import 'package:classroom_flutter/controller/apis/user_api.dart';
+import 'package:classroom_flutter/models/api_attendance_model.dart';
+import 'package:classroom_flutter/models/enrolled_user_model.dart';
+import 'package:classroom_flutter/providers/courses.dart';
+import 'package:classroom_flutter/snippets/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/src/provider.dart';
 
 class Attendance extends StatefulWidget {
   const Attendance({Key? key}) : super(key: key);
@@ -8,8 +18,138 @@ class Attendance extends StatefulWidget {
 }
 
 class _AttendanceState extends State<Attendance> {
+  UserApi _userApi = UserApi();
+  AttendanceAPI _attendanceAPI = AttendanceAPI();
+
+  // List<Attendance> _createAttendance;
+  List<ApiAttendanceModel> _attendance = [];
+
+  List<EnrolledUserModel> _listEnrolledUser = [];
+  LoadingIndicator _loadingIndicator = LoadingIndicator();
+
+  @override
+  void initState() {
+    super.initState();
+
+    new Future.delayed(Duration.zero, () {
+      if (Prefs.getLoggedInUserDetails().isStaff!) {
+        getPeoples(context);
+      } else {
+        fetchAttendance(context);
+      }
+    });
+  }
+
+  fetchAttendance(BuildContext context) async {
+    _loadingIndicator.showLoadingIndicator(
+        context: context, text: "Fetching Data");
+    var id = context.read<Courses>().currentCourse!.id;
+
+    var response = await _attendanceAPI.getAttendace(courseId: id.toString());
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _attendance = (jsonDecode(response.body) as List)
+            .map((e) => ApiAttendanceModel.fromJson(e))
+            .toList();
+      });
+      print(response.body);
+      Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
+  getPeoples(BuildContext context) async {
+    _loadingIndicator.showLoadingIndicator(
+        context: context, text: "Fetching Data");
+    var id = context.read<Courses>().currentCourse!.id;
+
+    var response = await _userApi.getUsersByCourse(courseId: id.toString());
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _listEnrolledUser = (jsonDecode(response.body) as List)
+            .map((e) => EnrolledUserModel.fromJson(e))
+            .where((element) => !element.isStaff! && !element.isSuperuser!)
+            .toList();
+      });
+      Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(child: Text("attendance"),);
+    return Prefs.getLoggedInUserDetails().isStaff!
+        ? ListView.builder(
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 10,
+                child: ListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.account_circle),
+                      Text(_listEnrolledUser[index].username!.toUpperCase()),
+                    ],
+                  ),
+                  subtitle: Row(
+                    children: [
+                      Icon(Icons.email),
+                      Flexible(child: Text(_listEnrolledUser[index].email!)),
+                    ],
+                  ),
+                  trailing: Switch(
+                    onChanged: (value) {},
+                    value: false,
+                  ),
+                ),
+              );
+            },
+            itemCount: _listEnrolledUser.length,
+          )
+        : AttendanceTable(_attendance);
+  }
+}
+
+class AttendanceTable extends StatefulWidget {
+  AttendanceTable(this.attendance);
+  final List<ApiAttendanceModel> attendance;
+
+  @override
+  State<AttendanceTable> createState() => _AttendanceTableState();
+}
+
+class _AttendanceTableState extends State<AttendanceTable> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: DataTable(
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text('#'),
+            ),
+            DataColumn(
+              label: Text('Date'),
+            ),
+            DataColumn(
+              label: Text('Attendance'),
+            ),
+          ],
+          rows: List<DataRow>.generate(
+              widget.attendance.length,
+              (int index) => DataRow(
+                    cells: <DataCell>[
+                      DataCell(Flexible(child: Text('${index + 1}'))),
+                      DataCell(Flexible(
+                          child: Text(
+                              '${DateFormat.yMMMMd().format(DateTime.parse(widget.attendance[index].createdAt!))}'))),
+                      DataCell(Text(
+                          '${widget.attendance[index].isAttend! ? "Yes" : "No"}')),
+                    ],
+                  ))),
+    );
   }
 }
