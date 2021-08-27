@@ -69,6 +69,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   child: Column(
                     children: [
                       TextFormField(
+                        style: TextStyle(color: Colors.black),
                         keyboardType: TextInputType.text,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
@@ -92,6 +93,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         height: 8.0,
                       ),
                       TextFormField(
+                        style: TextStyle(color: Colors.black),
                         keyboardType: TextInputType.emailAddress,
                         textAlign: TextAlign.center,
                         validator: (value) {
@@ -115,6 +117,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         height: 8.0,
                       ),
                       TextFormField(
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         obscureText: _isObscureText,
                         validator: (value) {
@@ -147,6 +150,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         height: 8.0,
                       ),
                       TextFormField(
+                        style: TextStyle(color: Colors.black),
                         textAlign: TextAlign.center,
                         obscureText: _isObscureText,
                         onChanged: (value) {

@@ -2,13 +2,16 @@ import 'dart:convert';
 
 import 'package:classroom_flutter/Share_preference/Share_pref.dart';
 import 'package:classroom_flutter/constants/constants.dart';
+import 'package:classroom_flutter/constants/theam.dart';
 import 'package:classroom_flutter/controller/apis/user_api.dart';
 import 'package:classroom_flutter/models/login_model.dart';
+import 'package:classroom_flutter/providers/theam.dart';
 import 'package:classroom_flutter/screens/registration_screen.dart';
 import 'package:classroom_flutter/snippets/loading_indicator.dart';
 import 'package:classroom_flutter/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 import 'home_screen.dart';
 
@@ -71,6 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     onChanged: (value) {
                       _username = value;
                     },
+                    cursorColor: Colors.black,
+                    style: TextStyle(color: Colors.black),
                     decoration: kTextFiledDecoration.copyWith(
                         hintText: "Enter Your username.",
                         suffixIcon: Icon(
@@ -91,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     },
+                    style: TextStyle(color: Colors.black),
                     textAlign: TextAlign.center,
                     obscureText: _isObscureText,
                     decoration: kTextFiledDecoration.copyWith(
@@ -132,6 +138,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     LoginDataModel user =
                         LoginDataModel.fromJson(jsonDecode(response.body));
                     Prefs.setLoggedInUser(user);
+
+                    if (user.isStaff == true) {
+                      Provider.of<TheamProvider>(context, listen: false)
+                          .setTheme(darkTheme);
+                    } else {
+                      Provider.of<TheamProvider>(context, listen: false)
+                          .setTheme(lightTheme);
+                    }
                     getUserAndNavigate();
                   } else {
                     Prefs.clearPref();

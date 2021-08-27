@@ -1,8 +1,11 @@
 import 'dart:async';
 
 import 'package:classroom_flutter/Share_preference/Share_pref.dart';
+import 'package:classroom_flutter/constants/theam.dart';
+import 'package:classroom_flutter/providers/theam.dart';
 import 'package:classroom_flutter/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'home_screen.dart';
 
@@ -38,6 +41,10 @@ class _SplashPageState extends State<SplashPage> {
     await Prefs.loadPref();
     if (Prefs.getBool(Prefs.IS_LOGGED_IN, def: false) != null &&
         Prefs.getBool(Prefs.IS_LOGGED_IN, def: false) == true) {
+      if (Prefs.getLoggedInUserDetails().isStaff == true) {
+        Provider.of<TheamProvider>(context, listen: false).setTheme(darkTheme);
+      }
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => HomePage()),
           (route) => false);

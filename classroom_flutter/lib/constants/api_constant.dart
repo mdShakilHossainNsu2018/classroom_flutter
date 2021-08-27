@@ -14,7 +14,7 @@ String getIP() {
 String K_BASE_URL = "http://${getIP()}:8000/api/";
 String K_LOGIN_URL = "${K_BASE_URL}users/token-auth/";
 String K_REGISTRATION_URL = "${K_BASE_URL}users/users/";
-String K_GET_USER_BY_COURSE_URL = "${K_BASE_URL}users/user_by_course/";
+String K_GET_USER_BY_COURSE_URL = "${K_BASE_URL}users/user_by_course/"; // get, course required
 String K_GET_COURSES_URL =
     "${K_BASE_URL}courses/user_course/"; // get method, token
 String K_GET_COURSE_URL =

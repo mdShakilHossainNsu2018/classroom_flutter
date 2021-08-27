@@ -1,9 +1,11 @@
 import 'package:classroom_flutter/models/courses_by_user_model.dart';
+import 'package:classroom_flutter/providers/courses.dart';
 import 'package:classroom_flutter/widgets/app_drawer.dart';
 import 'package:classroom_flutter/widgets/attendance.dart';
 import 'package:classroom_flutter/widgets/course_stream.dart';
 import 'package:classroom_flutter/widgets/peoples.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CourseScreen extends StatefulWidget {
   static const String routeName = "/course-screen";
@@ -44,9 +46,11 @@ class _CourseScreenState extends State<CourseScreen> {
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
-        title: Text(""),
+        title: Consumer<Courses>(builder: (context, course, child) {
+          return Text(course.currentCourse!.courseCode!);
+        }),
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: () {},
             child: Icon(
               Icons.video_call_outlined,

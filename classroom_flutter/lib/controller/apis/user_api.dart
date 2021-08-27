@@ -1,3 +1,4 @@
+import 'package:classroom_flutter/Share_preference/Share_pref.dart';
 import 'package:classroom_flutter/constants/api_constant.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,4 +22,16 @@ class UserApi {
     });
     return response;
   }
+
+
+  Future<http.Response> getUsersByCourse({required String courseId}) async {
+    String? token = Prefs.getLoggedInUserDetails().token;
+    var response = await http.get(
+        Uri.parse(
+          K_GET_USER_BY_COURSE_URL,
+        ).replace(queryParameters: {"course": courseId}),
+        headers: {'Authorization': "Token $token"});
+    return response;
+  }
+
 }

@@ -1,6 +1,7 @@
 import 'dart:core';
 import 'package:classroom_flutter/providers/courses.dart';
 import 'package:classroom_flutter/providers/posts.dart';
+import 'package:classroom_flutter/providers/theam.dart';
 import 'package:classroom_flutter/screens/chat_screen.dart';
 import 'package:classroom_flutter/screens/course_screen.dart';
 import 'package:classroom_flutter/screens/home_screen.dart';
@@ -23,22 +24,24 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Courses>(create: (context) => Courses()),
         ChangeNotifierProvider<PostProvider>(
             create: (context) => PostProvider()),
+        ChangeNotifierProvider<TheamProvider>(
+            create: (context) => TheamProvider()),
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        initialRoute: SplashPage.routeName,
-        routes: {
-          SplashPage.routeName: (context) => SplashPage(),
-          LoginScreen.routeName: (context) => LoginScreen(),
-          RegistrationScreen.routeName: (context) => RegistrationScreen(),
-          HomePage.routeName: (context) => HomePage(),
-          CourseScreen.routeName: (context) => CourseScreen(),
-          ChatScreen.routeName: (context) => ChatScreen(),
-        },
-      ),
+      child: Consumer<TheamProvider>(builder: (context, theam, child) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: theam.getTheme(),
+          initialRoute: SplashPage.routeName,
+          routes: {
+            SplashPage.routeName: (context) => SplashPage(),
+            LoginScreen.routeName: (context) => LoginScreen(),
+            RegistrationScreen.routeName: (context) => RegistrationScreen(),
+            HomePage.routeName: (context) => HomePage(),
+            CourseScreen.routeName: (context) => CourseScreen(),
+            ChatScreen.routeName: (context) => ChatScreen(),
+          },
+        );
+      }),
     );
   }
 }

@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
       ),
       appBar: AppBar(
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: () {
               logoutAndNavigate(context);
             },
