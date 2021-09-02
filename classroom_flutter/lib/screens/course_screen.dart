@@ -1,5 +1,7 @@
 import 'package:classroom_flutter/models/courses_by_user_model.dart';
 import 'package:classroom_flutter/providers/courses.dart';
+import 'package:classroom_flutter/screens/call_screen.dart';
+import 'package:classroom_flutter/screens/create_post_screen.dart';
 import 'package:classroom_flutter/widgets/app_drawer.dart';
 import 'package:classroom_flutter/widgets/attendance.dart';
 import 'package:classroom_flutter/widgets/course_stream.dart';
@@ -51,16 +53,47 @@ class _CourseScreenState extends State<CourseScreen> {
         }),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, CallScreen.routeName);
+            },
             child: Icon(
               Icons.video_call_outlined,
-              size: 50,
+              size: 40,
+  
+              color: Colors.white,
             ),
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final value = await Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => const CreatePostScreen(),
+            ),
+          ) as int;
+
+          setState(() {
+            if (value == 201) {
+              print(value);
+              // _selectedIndex = 1;
+              // _selectedIndex = 1;
+              CourseStreamState().getCourseDetail(context);
+
+              // CourseStream().createState().initState();
+              // initState();
+            }
+          });
+        },
+        child: Icon(
+          Icons.add,
+          size: 40,
+        ),
+      ),
       body: _widgets[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        key: UniqueKey(),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.view_stream_rounded),

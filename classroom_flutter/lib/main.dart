@@ -2,6 +2,7 @@ import 'dart:core';
 import 'package:classroom_flutter/providers/courses.dart';
 import 'package:classroom_flutter/providers/posts.dart';
 import 'package:classroom_flutter/providers/theam.dart';
+import 'package:classroom_flutter/screens/call_screen.dart';
 import 'package:classroom_flutter/screens/chat_screen.dart';
 import 'package:classroom_flutter/screens/course_screen.dart';
 import 'package:classroom_flutter/screens/home_screen.dart';
@@ -39,6 +40,7 @@ class MyApp extends StatelessWidget {
             HomePage.routeName: (context) => HomePage(),
             CourseScreen.routeName: (context) => CourseScreen(),
             ChatScreen.routeName: (context) => ChatScreen(),
+            CallScreen.routeName: (context) => CallScreen(),
           },
         );
       }),

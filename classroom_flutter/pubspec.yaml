@@ -35,6 +35,11 @@ dependencies:
   http: ^0.13.3
   flutter_webrtc: ^0.6.5
   intl: ^0.17.0
+  flutter_datetime_picker: ^1.5.1
+  file_picker: ^4.0.0
+  webview_flutter: ^2.0.12
+  syncfusion_flutter_pdfviewer: ^19.2.57-beta
+  sdp_transform: ^0.3.0
 
 dev_dependencies:
   flutter_test:

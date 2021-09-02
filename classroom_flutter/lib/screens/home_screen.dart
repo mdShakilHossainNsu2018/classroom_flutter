@@ -6,6 +6,7 @@ import 'package:classroom_flutter/models/courses_by_user_model.dart';
 import 'package:classroom_flutter/models/login_model.dart';
 import 'package:classroom_flutter/providers/courses.dart';
 import 'package:classroom_flutter/screens/login_screen.dart';
+import 'package:classroom_flutter/snippets/loading_indicator.dart';
 import 'package:classroom_flutter/widgets/app_drawer.dart';
 import 'package:classroom_flutter/widgets/course_item.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +25,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   CourseApi _courseApi = CourseApi();
+  LoadingIndicator _loadingIndicator = LoadingIndicator();
 
   @override
   void initState() {
     super.initState();
-    getCourses();
+    Future.delayed(Duration.zero, () {
+      getCourses(context);
+    });
   }
 
-  getCourses() async {
+  getCourses(BuildContext context) async {
+    _loadingIndicator.showLoadingIndicator(
+        context: context, text: "Fetching date.");
     LoginDataModel user = Prefs.getLoggedInUserDetails();
     var response = await _courseApi.getCourses(token: user.token!);
     if (response.statusCode == 200) {
@@ -41,6 +47,7 @@ class _HomePageState extends State<HomePage> {
 
       Provider.of<Courses>(context, listen: false).setCourses(_courseList);
     }
+    Navigator.pop(context);
   }
 
   @override
@@ -60,7 +67,10 @@ class _HomePageState extends State<HomePage> {
             onPressed: () {
               logoutAndNavigate(context);
             },
-            child: Icon(Icons.logout),
+            child: Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
           )
         ],
       ),

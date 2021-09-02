@@ -1,11 +1,20 @@
-class Attendance {
+class AttendanceModel {
   // course: this.id,
   // user: obj.id,
   // s_attend: true,
 
-  final String id;
+  final String course;
   final String user;
-  final bool is_attend;
+  bool is_attend;
 
-  Attendance(this.id, this.user, this.is_attend);
+  AttendanceModel(
+      {required this.course, required this.user, required this.is_attend});
+
+       Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = Map<String, dynamic>();
+    data["is_attend"] = is_attend;
+    data["course"] = course;
+    data["user"] = user;
+    return data;
+  }
 }
